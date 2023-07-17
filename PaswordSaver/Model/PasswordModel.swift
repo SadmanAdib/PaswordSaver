@@ -31,11 +31,11 @@ struct Password: Identifiable, Codable {
         }
         
         switch strength {
+        case ..<1: color = .gray
         case 1: color = .green
         case 2: color = .yellow
-        case 3: color = .red
-        default:
-            color = .gray
+        case 3...: color = .red
+        default: color = .gray
         }
         
         return color

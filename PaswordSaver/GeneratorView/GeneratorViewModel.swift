@@ -24,6 +24,9 @@ class GeneratorViewModel: ObservableObject {
         didSet {
             if showGenerator {
                 createPassword()
+            } else {
+                containsSymbols = true
+                containsUppercase = true
             }
         }
     }
