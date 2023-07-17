@@ -10,6 +10,8 @@ import SwiftUI
 struct ListView: View {
     @EnvironmentObject var generatorViewModel: GeneratorViewModel
     @StateObject private var listViewModel = ListViewModel()
+    
+    @Environment(\.scenePhase) var scenePhase
     var body: some View {
         NavigationView {
             if listViewModel.isUnlocked {
@@ -34,6 +36,14 @@ struct ListView: View {
                             }
                         }
                         .navigationTitle("Passwords")
+                        .onChange(of: scenePhase) { newPhase in
+                            switch newPhase {
+                            case .inactive, .background:
+                                listViewModel.isUnlocked = false
+                            default:
+                                break
+                            }
+                        }
                     } else {
                         Text("No Passwords in the list yet 😕")
                             .font(.largeTitle)
@@ -44,9 +54,22 @@ struct ListView: View {
                     generatorViewModel.passwords = generatorViewModel.retrieveAllItemsFromKeychain() ?? []
                 }
             } else {
-                Text("You Are Not Authorised Yet!")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
+                VStack {
+                    Text("Please Authenticate Yourself First!")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                    Button {
+                        listViewModel.authenticate()
+                    } label: {
+                        Text("Authenticate")
+                            .foregroundColor(.white)
+                            .padding(10)
+                            .background {
+                                Color.green
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                    }
+                }
             }
         }
         .onAppear {
