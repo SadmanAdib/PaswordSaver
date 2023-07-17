@@ -115,8 +115,21 @@ struct GeneratorView: View {
                 }
             }
             .navigationTitle("Password Generator")
+            .sheet(isPresented: $generatorViewModel.showGuideView, content: {
+                GuideView()
+            })
             .alert("Password Added Successfully!", isPresented: $generatorViewModel.showAlert) {
                 Button("OK", role: .cancel) { }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        generatorViewModel.showGuideView = true
+                    } label: {
+                        Image(systemName: "info.circle.fill")
+                    }
+
+                }
             }
         }
     }

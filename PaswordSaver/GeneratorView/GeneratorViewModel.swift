@@ -20,6 +20,8 @@ class GeneratorViewModel: ObservableObject {
     
     @Published var showAlert: Bool = false
     
+    @Published var showGuideView: Bool = false
+    
     @Published var showGenerator: Bool = false {
         didSet {
             if showGenerator {
